@@ -1,0 +1,63 @@
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 20px;
+}
+  
+.main-container
+{
+    border-color: black;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.main-menu
+{
+    height: 50px;
+    width: 100%;
+    background-color: black;
+    color: white;
+}
+
+.menu-item
+{
+    float: left;
+    padding: 15px;
+    box-sizing: content-box;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.menu-item:hover
+{
+    background-color: rgb(77, 73, 73);
+}
+
+.frame {
+    border: 1px solid black;
+    margin: 40px;
+    height: calc(100% - 132px);
+    box-sizing: content-box;
+}
+
+.article-list
+{
+    width: 120px;
+    margin: 10px;
+    border: 1px solid black;
+    box-sizing: content-box;
+    height: calc(100% - 20px);
+    overflow-y: auto;
+}
+
+.article
+{
+    width: 95%;
+    height: 120px;
+    border: 1px solid black;
+    cursor: pointer;
+    text-align: center;
+}
+  
