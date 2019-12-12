@@ -75,4 +75,24 @@ body {
     margin: 10px;
     float: left;
 }
-  
+ 
+.image-container
+{
+    float: left;
+    box-sizing: content-box;
+    width: calc(50% - 1px);
+    height: 100%;
+    align-content: center;
+    text-align: center;
+    border-right: 1px solid black;
+}
+
+.add-form
+{
+    float: left;
+    box-sizing: content-box;
+    width: 50%;
+    height: 100%;
+    align-content: center;
+    text-align: center;
+}
