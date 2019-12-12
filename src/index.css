@@ -30,6 +30,11 @@ body {
     cursor: pointer;
 }
 
+.selected
+{
+    background-color: rgb(77, 73, 73);
+}
+
 .menu-item:hover
 {
     background-color: rgb(77, 73, 73);
@@ -50,6 +55,7 @@ body {
     box-sizing: content-box;
     height: calc(100% - 20px);
     overflow-y: auto;
+    float:left
 }
 
 .article
@@ -59,5 +65,14 @@ body {
     border: 1px solid black;
     cursor: pointer;
     text-align: center;
+}
+
+.article-preview
+{
+    box-sizing: content-box;
+    width: calc(100% - 165px);
+    height: calc(100% - 20px);
+    margin: 10px;
+    float: left;
 }
   

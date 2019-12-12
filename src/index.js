@@ -12,11 +12,22 @@ class Article extends React.Component {
     }
 }
 
-class Frame extends React.Component {
+class FrameProducts extends React.Component {
     render() {
         return(
             <div className="frame">
                 <ArticleList />
+                <ArticlePreview />
+            </div>
+        );
+    }
+}
+
+class FrameBucket extends React.Component {
+    render() {
+        return(
+            <div className="frame">
+                Bucket
             </div>
         );
     }
@@ -26,19 +37,29 @@ class Menu extends React.Component {
     render(){
         return(
             <div className="main-menu">
-                <MenuItem destination="products" text="Products"/>
-                <MenuItem destination="basket" text="Basket"/>
+                <MenuItem destination="products" text="Products" selected={this.props.selected === 'products' ? true : false} click={this.props.click} />
+                <MenuItem destination="bucket" text="Bucket" selected={this.props.selected === 'bucket' ? true : false} click={this.props.click}/>
             </div>
         );
     }
 }
 
 function MenuItem(props) {
-    return(
-        <div className="menu-item">
-            <a href={props.url}>{props.text}</a>
-        </div>
-    );
+    const style = "menu-item" + (props.selected ? " selected" : "");
+    const destination = props.destination;
+    if (props.selected) {
+        return(
+            <div className={style} id={destination}>
+                <a href={props.url}>{props.text}</a>
+            </div>
+        );    
+    } else {
+        return(
+            <div className={style} id={destination} onClick={props.click}>
+                {props.text}
+            </div>
+        );
+    }
 }
 
 class ArticleList extends React.Component {
@@ -60,20 +81,46 @@ class ArticleList extends React.Component {
 
 function ArticlePreview() {
     return (
-        <div>
+        <div className="article-preview">
             test
         </div>
     );
 }
 
-function MainFrame() {
-    return(
-        <div className='main-container'>
-            <Menu />
-            <Frame />
-        </div>
-    );
+class MainFrame extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            view: props.view,
+        };
+        this.handleChangeMenu = this.handleChangeMenu.bind(this);
+    }
+    
+    handleChangeMenu(view){
+        this.setState({view: view.target.id});
+    }
+
+    render() {
+        const view = this.state.view;
+
+        if (view === 'products') {
+            return(
+                <div className='main-container'>
+                    <Menu selected='products' click={this.handleChangeMenu}/>
+                    <FrameProducts />
+                </div>
+            );
+        } else {
+            return(
+                <div className='main-container'>
+                    <Menu selected='bucket'click={this.handleChangeMenu}/>
+                    <FrameBucket />
+                </div>
+            );
+        }
+        
+    }
 }
   
-ReactDOM.render(<MainFrame />, document.getElementById('root'));
+ReactDOM.render(<MainFrame view="products"/>, document.getElementById('root'));
   
