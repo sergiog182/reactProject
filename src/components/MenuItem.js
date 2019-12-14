@@ -5,13 +5,13 @@ function MenuItem(props) {
     const destination = props.destination;
     if (props.selected) {
         return(
-            <div className={style} id={destination}>
+            <div className={style} destinationview={destination}>
                 <a href={props.url}>{props.text}</a>
             </div>
         );    
     } else {
         return(
-            <div className={style} id={destination} onClick={props.click}>
+            <div className={style} destinationview={destination} onClick={props.click}>
                 {props.text}
             </div>
         );

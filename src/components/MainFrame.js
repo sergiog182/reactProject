@@ -12,8 +12,9 @@ class MainFrame extends React.Component {
         this.handleChangeMenu = this.handleChangeMenu.bind(this);
     }
     
-    handleChangeMenu(view){
-        this.setState({view: view.target.id});
+    handleChangeMenu(e){
+        const view = e.target.getAttribute("destinationview");
+        this.setState({view: view});
     }
 
     render() {
