@@ -6,7 +6,9 @@ class SizeSelector extends React.Component {
         let items = [];
         items.push(<option key={-1} id={0} value={0}> - Select an option - </option>);
         if (sizes.lenght !== 0){
+            alert("Aqui si esta");    
             sizes.forEach((element, index) => {
+                alert("Si entra");
                 items.push(<option key={index} id={index} value={index}>{element}</option>);
             });
         }
