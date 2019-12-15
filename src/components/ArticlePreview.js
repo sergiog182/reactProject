@@ -16,14 +16,65 @@ class ArticlePreview extends React.Component {
     }
 
     handleProductChange(e){
-        //const name = e.target.getAttribute("productname");
         const sku = e.target.value;
         this.setState({productSKU: sku});
     }
 
     addToBag = () => {
+        document.getElementById("loader").classList.add("active");
         const article = this.state.productSKU;
-        alert(article);
+        const quantity = document.getElementById("cuantitySelector").value;
+        if (article !== "") {
+            if (typeof sessionStorage.basketId === 'undefined' || sessionStorage.basketId === null) {
+                fetch(
+                    "http://localhost:8080/www.adidas.com/api/checkout/baskets", 
+                    {
+                        method: 'post', 
+                        headers: {
+                            'Content-Type':'application/json'
+                        },
+                        mode: 'cors',
+                        credentials: 'include'
+                    }
+                )
+                .then(res => res.json())
+                .then((data) => {
+                  if (typeof data.basketId !== 'undefined') {
+                    sessionStorage.basketId = data.basketId;
+                    this.setProductToBasket(article, quantity);
+                  }
+                })
+                .catch((error) => { document.getElementById("loader").classList.remove("active"); alert("UPS! something went wrong"); console.log(error);});
+            } else {
+                this.setProductToBasket(article, quantity);
+            }
+        } else {
+            alert("You must choose a size");
+            document.getElementById("loader").classList.remove("active");
+        }
+    }
+
+    setProductToBasket = (article, quantity) => {
+        const data = [{"productId": article, "quantity": quantity}];
+        fetch(
+            "http://localhost:8080/www.adidas.com/api/checkout/baskets/" + sessionStorage.basketId + "/items", 
+            {
+                method: 'post', 
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                mode: 'cors',
+                credentials: 'include',
+                body: JSON.stringify(data)
+            }
+        )
+        .then(res => res.json())
+        .then((data) => {
+          console.log(data);
+          document.getElementById("loader").classList.remove("active");
+          alert("Article has been added successfully");
+        })
+        .catch((error) => { document.getElementById("loader").classList.remove("active"); alert("UPS! something went wrong"); console.log(error);});
     }
 
     render(){
@@ -37,12 +88,17 @@ class ArticlePreview extends React.Component {
                     </div>
                     <div className="add-form">
                         <h1>{this.props.articleName}</h1>
-                        <div>
-                            Choose Size: <SizeSelector sizes={this.props.articleSizes} change={this.handleProductChange}/>
+                        <div className="main-form">
+                            <div className="input-container">
+                                Choose Size: <SizeSelector sizes={this.props.articleSizes} change={this.handleProductChange}/>
+                            </div>
                             <br />
-                            Choose quantity: <QuantitySelector maxQuantity={15} />
+                            <div className="input-container">
+                                Choose quantity: <QuantitySelector maxQuantity={15} />
+                            </div>
                             <br />
-                            <button onClick={this.addToBag}> - ADD TO BAG - </button> 
+                            <br />
+                            <button className="btn-form" onClick={this.addToBag}> - ADD TO BAG - </button> 
                         </div>
                     </div>
                 </div>

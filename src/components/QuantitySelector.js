@@ -11,7 +11,7 @@ class QuantitySelector extends React.Component {
     
     render(){
         return(
-            <select> 
+            <select id="cuantitySelector" className="selector"> 
                 {this.createSelectItems()}
             </select>
         )

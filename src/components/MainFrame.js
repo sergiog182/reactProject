@@ -19,10 +19,13 @@ class MainFrame extends React.Component {
 
     render() {
         const view = this.state.view;
-
+        const srcloading = require('../assets/images/loading.gif');
         if (view === 'products') {
             return(
                 <div className='main-container'>
+                    <div id="loader" className="loading-container">
+                        <img src={srcloading} alt="loading" />
+                    </div>
                     <Menu selected='products' click={this.handleChangeMenu}/>
                     <FrameProducts />
                 </div>
@@ -30,6 +33,9 @@ class MainFrame extends React.Component {
         } else {
             return(
                 <div className='main-container'>
+                    <div id="loader" className="loading-container">
+                        <img src={srcloading} alt="loading" />
+                    </div>
                     <Menu selected='bucket'click={this.handleChangeMenu}/>
                     <FrameBucket />
                 </div>

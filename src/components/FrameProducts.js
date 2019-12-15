@@ -24,6 +24,7 @@ class FrameProducts extends React.Component {
     }
     
     handleArticleChange(e){
+        document.getElementById("loader").classList.add("active");
         const name = e.target.getAttribute("productname");
         const id = e.target.getAttribute("productid");
         fetch(
@@ -40,8 +41,9 @@ class FrameProducts extends React.Component {
         .then((data) => {
           const arraySizes = this.getAvailability(data);
           this.setState({articleId: id, articleName: name, articleSizes: arraySizes});
+          document.getElementById("loader").classList.remove("active");
         })
-        .catch(console.log);
+        .catch((error) => { document.getElementById("loader").classList.remove("active"); alert("UPS! something went wrong"); console.log(error);});
     }
 
     render() {
