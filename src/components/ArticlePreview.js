@@ -39,10 +39,7 @@ class ArticlePreview extends React.Component {
                     }
                 )
                 .then((res) => {
-                    console.log(res.headers);
-                    console.log("Authorization = " + res.headers.get("authorization"));
                     headers = res.headers;
-                    sessionStorage.authorizationToken = res.headers.get("authorization"); 
                     return res.json()
                 })
                 .then((data) => {
@@ -50,6 +47,7 @@ class ArticlePreview extends React.Component {
                     console.log(data);
                     console.log("headers: ");
                     console.log(headers.get("authorization"));
+                    sessionStorage.authorizationToken = headers.get("authorization");
                     if (typeof data.basketId !== 'undefined') {
                         sessionStorage.basketId = data.basketId;
                         this.setProductToBasket(article, quantity);
