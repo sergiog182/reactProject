@@ -24,10 +24,11 @@ class ArticlePreview extends React.Component {
         document.getElementById("loader").classList.add("active");
         const article = this.state.productSKU;
         const quantity = document.getElementById("cuantitySelector").value;
+        let headers = null;
         if (article !== "") {
             if (typeof sessionStorage.basketId === 'undefined' || sessionStorage.basketId === null) {
                 fetch(
-                    "http://localhost:8080/www.adidas.com/api/checkout/baskets", 
+                    "https://www.adidas.com/api/checkout/baskets", 
                     {
                         method: 'post', 
                         headers: {
@@ -37,14 +38,31 @@ class ArticlePreview extends React.Component {
                         credentials: 'include'
                     }
                 )
-                .then(res => res.json())
-                .then((data) => {
-                  if (typeof data.basketId !== 'undefined') {
-                    sessionStorage.basketId = data.basketId;
-                    this.setProductToBasket(article, quantity);
-                  }
+                .then((res) => {
+                    console.log(res.headers);
+                    console.log("Authorization = " + res.headers.get("authorization"));
+                    headers = res.headers;
+                    sessionStorage.authorizationToken = res.headers.get("authorization"); 
+                    return res.json()
                 })
-                .catch((error) => { document.getElementById("loader").classList.remove("active"); alert("UPS! something went wrong"); console.log(error);});
+                .then((data) => {
+                    console.log("Datos JSON finales: ");
+                    console.log(data);
+                    console.log("headers: ");
+                    console.log(headers.get("authorization"));
+                    if (typeof data.basketId !== 'undefined') {
+                        sessionStorage.basketId = data.basketId;
+                        this.setProductToBasket(article, quantity);
+                    } else {
+                        document.getElementById("loader").classList.remove("active"); 
+                        alert("UPS! something went wrong");     
+                    }
+                })
+                .catch((error) => { 
+                    document.getElementById("loader").classList.remove("active"); 
+                    alert("UPS! something went wrong"); 
+                    console.log(error);
+                });
             } else {
                 this.setProductToBasket(article, quantity);
             }
@@ -55,26 +73,32 @@ class ArticlePreview extends React.Component {
     }
 
     setProductToBasket = (article, quantity) => {
-        const data = [{"productId": article, "quantity": quantity}];
+        const data = [{"productId": article, "quantity": parseInt(quantity)}];
+        console.log("peticion final: " + JSON.stringify(data));
         fetch(
-            "http://localhost:8080/www.adidas.com/api/checkout/baskets/" + sessionStorage.basketId + "/items", 
+            "https://www.adidas.com/api/checkout/baskets/" + sessionStorage.basketId + "/items", 
             {
                 method: 'post', 
                 headers: {
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
+                    'authorization': sessionStorage.authorizationToken
                 },
                 mode: 'cors',
                 credentials: 'include',
                 body: JSON.stringify(data)
             }
         )
-        .then(res => res.json())
-        .then((data) => {
-          console.log(data);
-          document.getElementById("loader").classList.remove("active");
-          alert("Article has been added successfully");
+        .then((res) => {
+            const data = res.json()
+            console.log(data);
+            document.getElementById("loader").classList.remove("active");
+            alert("Article has been added successfully");
         })
-        .catch((error) => { document.getElementById("loader").classList.remove("active"); alert("UPS! something went wrong"); console.log(error);});
+        .catch((error) => { 
+            document.getElementById("loader").classList.remove("active"); 
+            alert("UPS! something went wrong"); 
+            console.log(error);
+        });
     }
 
     render(){

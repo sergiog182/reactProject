@@ -28,7 +28,7 @@ class FrameProducts extends React.Component {
         const name = e.target.getAttribute("productname");
         const id = e.target.getAttribute("productid");
         fetch(
-            "http://localhost:8080/www.adidas.com/api/products/" + id + "/availability", 
+            "https://www.adidas.com/api/products/" + id + "/availability", 
             {
                 method: 'get', 
                 headers: {
